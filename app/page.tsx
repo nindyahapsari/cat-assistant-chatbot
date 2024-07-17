@@ -1,11 +1,12 @@
-import Mainchat from "@/components/Mainchat";
+import MainChat from "@/components/MainChat";
 import Sidebar from "@/components/Sidebar";
+
 
 export default function Home() {
   return (
-    <div className="h-screen grid desktop:grid-cols-12 desktop:grid-rows-12">
+    <div className="h-screen grid desktop:grid-cols-12 desktop:auto-rows-auto">
       <Sidebar />
-      <Mainchat />
+      <MainChat />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Funfact from "./Funfact";
+import FunFact from "./FunFact";
 
 export default function Sidebar() {
   return (
@@ -51,7 +51,7 @@ export default function Sidebar() {
             </ul>
           </div>
           <div className="my-4">
-            <Funfact />
+            <FunFact />
           </div>
           <div>
             <Button className="w-full">Settings</Button>
