@@ -3,7 +3,7 @@
 import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronUp } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 import { Message } from "@/types";
@@ -82,13 +82,13 @@ export default function MainChat() {
   };
 
   return (
-    <div className="py-4 px-4 overflow-hidden desktop:col-start-4 desktop:col-span-12 desktop:row-span-12">
-      <div className="h-full p-4 flex flex-col justify-between">
+    <div className="py-4 overflow-hidden desktop:col-start-4 desktop:col-end-10 desktop:row-span-12">
+      <div className="h-full p-4 flex flex-col">
         <ChatMessages />
 
         <div className="px-4 flex w-full items-center space-x-2">
           <Textarea
-            className="max-h-64 desktop:text-xl"
+            className="max-h-64 resize-none desktop:text-lg"
             placeholder="Type your message here."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
@@ -107,12 +107,13 @@ export default function MainChat() {
           <Button
             disabled={isPending || !chatInput}
             type="submit"
+            size="icon"
             onClick={handleSendMessage}
           >
             {isPending ? (
               <Loader2 className="h-4 w-8 animate-spin" />
             ) : (
-              "Submit"
+              <ChevronUp aria-label="enter-button" />
             )}
           </Button>
         </div>

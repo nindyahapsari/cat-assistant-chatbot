@@ -5,7 +5,7 @@ import { createContext, useState } from "react";
 const defaultValue = [
   {
     id: nanoid(),
-    text: "Greetings cat member, wecome to the cult. How can I help you today?",
+    text: "Greetings cat member, welcome to the cult. How can I help you today?",
     isUserMessage: false,
   },
 ];

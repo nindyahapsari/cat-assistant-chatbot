@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function ChatBubble({
   isUserMessage,
@@ -9,29 +10,31 @@ export default function ChatBubble({
   text: string;
 }) {
   return (
-    <div
+    <Card
       className={cn(
-        "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-slate-100 rounded-lg desktop:w-2/6  desktop:text-xl",
+        "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-slate-100 rounded-lg desktop:max-w-xl  desktop:text-lg",
         {
           "bg-neutral-200": isUserMessage,
         }
       )}
     >
-      <div className={isUserMessage ? "hidden" : ""}>
-        <Image
-          src="/assets/pawprint-6503.svg"
-          alt="Cat Assistant"
-          className="object-cover scale-50"
-          width={50}
-          height={50}
-        />
-      </div>
-      <div className="flex flex-col w-2/3 rounded-md desktop:px-4">
+      {!isUserMessage ? (
+        <CardHeader className="min-w-20 w-20 items-center">
+          <Image
+            src="/assets/pawprint-6503.svg"
+            alt="Cat Assistant"
+            className="object-fill"
+            width={50}
+            height={50}
+          />
+        </CardHeader>
+      ) : null}
+      <CardContent className="flex flex-col rounded-md desktop:px-4">
         <h4 className="text-xs font-semibold py-2">
           {isUserMessage ? "You" : "Whisker"}
         </h4>
         <p>{text}</p>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

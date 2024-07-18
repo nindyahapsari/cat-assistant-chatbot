@@ -1,20 +1,20 @@
 import { useContext } from "react";
-import ChatBubble from "./ChatBubble";
 import { MessagesContext } from "@/context/messages";
 import { cn } from "@/lib/utils";
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import ChatBubble from "./ChatBubble";
 
 export default function ChatMessages() {
   const { messages } = useContext(MessagesContext);
+  const inverseMessages = [...messages].reverse();
 
   return (
-    <div className="h-5/6 mb-4 px-4 overflow-y-scroll">
-      {messages.map(({ id, isUserMessage, text }) => {
+    <div className="h-5/6 mb-8 px-4 flex flex-col-reverse gap-3 overflow-y-scroll">
+      {inverseMessages.map(({ id, isUserMessage, text }) => {
         return (
           <div
             key={id}
-            className={cn("flex", {
+            className={cn("flex justify-start items-end", {
               "justify-end": isUserMessage,
             })}
           >
