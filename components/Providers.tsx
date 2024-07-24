@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MessagesProvider } from "@/context/messages";
+import { ClerkProvider } from "@clerk/nextjs";
 
 type ProvidersProps = {
   children: ReactNode;
@@ -13,7 +14,9 @@ export default function Providers({ children }: ProvidersProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MessagesProvider>{children}</MessagesProvider>
+      <MessagesProvider>
+        <ClerkProvider>{children}</ClerkProvider>
+      </MessagesProvider>
     </QueryClientProvider>
   );
 }

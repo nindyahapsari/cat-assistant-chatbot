@@ -13,7 +13,7 @@ export default function ChatBubble({
   return (
     <Card
       className={cn(
-        "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-slate-100 rounded-lg desktop:max-w-xl  desktop:text-lg",
+        "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-slate-100 rounded-lg desktop:max-w-xl desktop:text-lg",
         {
           "bg-neutral-200": isUserMessage,
         }
@@ -30,11 +30,11 @@ export default function ChatBubble({
           />
         </CardHeader>
       ) : null}
-      <CardContent className="flex flex-col rounded-md desktop:px-4">
+      <CardContent className="flex flex-col rounded-md desktop:px-2">
         <h4 className="text-xs font-semibold py-2">
           {isUserMessage ? "You" : "Whisker"}
         </h4>
-        <div className=" whitespace-pre-line">
+        <div className="whitespace-pre-line">
           <ReactMarkdown>{text}</ReactMarkdown>
         </div>
       </CardContent>
