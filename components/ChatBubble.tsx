@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import ReactMarkdown from "react-markdown";
 
 export default function ChatBubble({
   isUserMessage,
@@ -33,7 +34,9 @@ export default function ChatBubble({
         <h4 className="text-xs font-semibold py-2">
           {isUserMessage ? "You" : "Whisker"}
         </h4>
-        <p>{text}</p>
+        <div className=" whitespace-pre-line">
+          <ReactMarkdown>{text}</ReactMarkdown>
+        </div>
       </CardContent>
     </Card>
   );
