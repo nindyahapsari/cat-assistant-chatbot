@@ -82,7 +82,7 @@ export default function MainChat() {
   };
 
   return (
-    <div className="py-4 overflow-hidden desktop:col-start-4 desktop:col-end-10 desktop:row-span-12">
+    <div className="py-4 overflow-hidden desktop:col-start-4 desktop:col-end-12 desktop:row-span-12">
       <div className="h-full p-4 flex flex-col">
         <ChatMessages />
 
