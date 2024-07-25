@@ -3,14 +3,10 @@ import { rateLimiter } from "./lib/ratelimiter";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 async function rateLimitMiddleware(req: NextRequest) {
-  //helps enables authentication and to confifure protected routes
-
   const ip = req.ip ?? "127.0.0.1";
 
   try {
     const { success } = await rateLimiter.limit(ip);
-
-    console.log("success", success);
 
     if (!success) return new NextResponse("You are writing messages too fast.");
     return NextResponse.next();
@@ -21,15 +17,15 @@ async function rateLimitMiddleware(req: NextRequest) {
   }
 }
 
-const isProtectedRoutes = createRouteMatcher([/signin\/.*/]);
+const isProtectedRoutes = createRouteMatcher(["(.*)/profile"]);
 
 export default clerkMiddleware(async (auth, request) => {
   if (isProtectedRoutes(request)) {
     auth().protect();
   }
 
-  const rateLimit = await rateLimitMiddleware(request);
-  if (rateLimit) return rateLimit;
+  // const rateLimit = await rateLimitMiddleware(request);
+  // if (rateLimit) return rateLimit;
 
   return NextResponse.next();
 });
@@ -43,5 +39,6 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)",
     "/",
+    "/:userId/profile(.*)",
   ],
 };
