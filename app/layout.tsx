@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
-import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,8 +23,7 @@ export default function RootLayout({
           <div className="h-screen w-1/6">
             <Sidebar />
           </div>
-          <div className="w-5/6">{children}</div>
-          <Script src="https://apis.google.com/js/api.js" />
+          <div className="w-5/6 overflow-hidden">{children}</div>
         </body>
       </Providers>
     </html>
