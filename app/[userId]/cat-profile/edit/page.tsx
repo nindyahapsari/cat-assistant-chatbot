@@ -3,15 +3,15 @@ import { useUser } from "@clerk/clerk-react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+
 import { Table, TableRow } from "@/components/ui/table";
-import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
+import InputForm from "@/components/dashboard/InputForm";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
-  age: z.string(),
+  age: z.string().optional(),
   breed: z.string().min(1, "Breed is required"),
   birthdate: z.string().optional(),
   vetClinic: z.string().optional(),
@@ -21,56 +21,59 @@ const schema = z.object({
   vaccinations: z.string().min(1, "Vaccinations are required"),
   weight: z.string().optional(),
   color: z.string().optional(),
+  placeholder: z.string().optional(),
 });
+
+export type CatProfileSchema = z.infer<typeof schema>;
 
 const catInfoForm = [
   {
-    name: "Name",
+    name: "name",
     placeholder: "Whisker",
   },
   {
-    name: "Age",
+    name: "age",
     placeholder: "10",
   },
   {
-    name: "City",
+    name: "city",
     placeholder: "Berlin",
   },
   {
-    name: "Breed",
+    name: "breed",
     placeholder: "Domestic Short Hair",
   },
   {
-    name: "Birthdate",
+    name: "birthdate",
     placeholder: "01.10.2016 or -",
   },
   {
-    name: "Vet Clinic",
+    name: "vetClinic",
     placeholder: "Neukölln vet clinic, Berlin",
   },
   {
-    name: "Chip number",
+    name: "chipNumber",
     placeholder: "XB123456",
   },
   {
-    name: "Medical Issues",
+    name: "medicalIssues",
     placeholder: "Overweight, needs diet food, eye infection",
   },
   {
-    name: "Fav Food",
+    name: "favFood",
     placeholder: "Mac (german brand), cheese, and tuna, but not together",
   },
   {
-    name: "Vaccinations",
+    name: "vaccinations",
     placeholder:
       "Tollwut, Katzenschnupfen, Leukose (in german) - Rabies, Feline viral rhinotracheitis, Feline leukemia",
   },
   {
-    name: "Weight",
+    name: "weight",
     placeholder: "4kg",
   },
   {
-    name: "Color",
+    name: "color",
     placeholder: "Dark tiger stripes",
   },
 ];
@@ -86,16 +89,15 @@ export default function Edit() {
 
   const { user } = useUser();
 
-  const handleOnSubmit = async (data) => {
+  const onSubmit = async (data: CatProfileSchema) => {
+    console.log("data", data);
     try {
       const response = await fetch("/api/cat-profile", {
         method: "POST",
-        body: {
-          userId: user?.id,
-          ...data,
-        },
+        body: JSON.stringify(data),
       });
-      console.log("Profile created:", response);
+      const jsonResponse = await response.json();
+      console.log("Profile created:", jsonResponse);
     } catch (error) {
       console.error("Error creating profile:", error);
     }
@@ -109,19 +111,17 @@ export default function Edit() {
           <CardTitle>Edit Cat Profile</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Table>
-              {catInfoForm.map((form) => {
+              {catInfoForm.map(({ name, placeholder }) => {
                 return (
-                  <TableRow key={form.name}>
-                    <div className="flex flex-row justify-between items-center gap-4 p-4">
-                      <Label htmlFor={form.name}>{form.name}:</Label>
-                      <Input
-                        className="max-w-xl"
-                        placeholder={form.placeholder}
-                        {...register(form.name.toLowerCase())}
-                      />
-                    </div>
+                  <TableRow key={name}>
+                    <InputForm
+                      errors={errors}
+                      register={register}
+                      name={name as keyof CatProfileSchema}
+                      placeholder={placeholder}
+                    />
                   </TableRow>
                 );
               })}

@@ -29,18 +29,16 @@ export default function Sidebar() {
       </div>
       <div className="h-full w-full flex flex-col justify-end gap-y-4">
         <SignedOut>
-          <Button variant="outline">
-            <SignInButton />
-          </Button>
+          <SignInButton />
         </SignedOut>
 
         <SignedIn>
-          <Button variant="outline">
+          <div>
             <Link href={`/${user?.id}/profile`}>Profile</Link>
-          </Button>
-          <Button variant="outline">
+          </div>
+          <div>
             <SignOutButton />
-          </Button>
+          </div>
         </SignedIn>
       </div>
     </div>
