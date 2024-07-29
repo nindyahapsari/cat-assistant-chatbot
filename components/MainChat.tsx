@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, ChevronUp } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { Message } from "@/types";
 import { MessagesContext } from "@/context/messages";
 import ChatMessages from "./ChatMessages";
@@ -39,7 +39,7 @@ export default function MainChat() {
     onSuccess: async (stream) => {
       if (!stream) throw new Error("No stream response");
 
-      const id = nanoid();
+      const id = uuid();
       const responseMessage: Message = {
         id,
         isUserMessage: false,
@@ -72,7 +72,7 @@ export default function MainChat() {
 
   const handleSendMessage = async () => {
     const userInput = {
-      id: nanoid(),
+      id: uuid(),
       isUserMessage: true,
       text: chatInput,
     };

@@ -1,10 +1,10 @@
 import { Message } from "@/types";
-import { nanoid } from "nanoid";
+import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 
 const defaultValue = [
   {
-    id: nanoid(),
+    id: uuidv4(),
     text: "Greetings cat member, I'm Whisker your personal cat assistant. How can I help you today?",
     isUserMessage: false,
   },
