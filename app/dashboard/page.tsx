@@ -62,7 +62,7 @@ export default function Dashboard() {
       } else {
         console.log(`auth2 not signed in`);
         const googleSignIn = document.getElementById("googleSignIn");
-        auth2.attachClickHandler(googleSignIn, {}, (googleUser) => {
+        auth2.attachClickHandler(googleSignIn, {}, (googleUser: any) => {
           // getBasicProfile().getName() is the user's name
           // click prototype in console to see all the methods available
           // old docs:https://developers.google.com/identity/sign-in/web/reference
