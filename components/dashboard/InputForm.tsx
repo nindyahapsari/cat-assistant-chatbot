@@ -16,13 +16,18 @@ export default function InputForm({
   name,
   placeholder,
 }: InputFormProps) {
+  function spaceSeparatedToUnderscore(name: string): string {
+    return name.replace(/\s+/g, "_").toLowerCase();
+  }
+
+  const registerName = spaceSeparatedToUnderscore(name);
   return (
     <div className="flex flex-row justify-between items-center gap-4 p-4">
       <Label htmlFor={name}>{name}:</Label>
       <Input
         className="max-w-xl"
         placeholder={placeholder}
-        {...register(name as keyof CatProfileSchema)}
+        {...register(registerName as keyof CatProfileSchema)}
       />
       {errors[name as keyof CatProfileSchema] && (
         <span>{errors[name as keyof CatProfileSchema]?.message}</span>

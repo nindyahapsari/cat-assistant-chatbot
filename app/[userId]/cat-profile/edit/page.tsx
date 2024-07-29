@@ -1,8 +1,8 @@
 "use client";
-import { useUser } from "@clerk/clerk-react";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { v4 as uuid } from "uuid";
 
 import { Table, TableRow } from "@/components/ui/table";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,10 +14,10 @@ const schema = z.object({
   age: z.string().optional(),
   breed: z.string().min(1, "Breed is required"),
   birthdate: z.string().optional(),
-  vetClinic: z.string().optional(),
-  chipNumber: z.string().optional(),
-  medicalIssues: z.string().optional(),
-  favFood: z.string().optional(),
+  vet_clinic: z.string().optional(),
+  chip_number: z.string().optional(),
+  medical_issues: z.string().optional(),
+  fav_foods: z.string().optional(),
   vaccinations: z.string().min(1, "Vaccinations are required"),
   weight: z.string().optional(),
   color: z.string().optional(),
@@ -28,52 +28,52 @@ export type CatProfileSchema = z.infer<typeof schema>;
 
 const catInfoForm = [
   {
-    name: "name",
+    name: "Name",
     placeholder: "Whisker",
   },
   {
-    name: "age",
+    name: "Age",
     placeholder: "10",
   },
   {
-    name: "city",
+    name: "City",
     placeholder: "Berlin",
   },
   {
-    name: "breed",
+    name: "Breed",
     placeholder: "Domestic Short Hair",
   },
   {
-    name: "birthdate",
+    name: "Birthdate",
     placeholder: "01.10.2016 or -",
   },
   {
-    name: "vetClinic",
+    name: "Vet Clinic",
     placeholder: "Neukölln vet clinic, Berlin",
   },
   {
-    name: "chipNumber",
+    name: "Chip Number",
     placeholder: "XB123456",
   },
   {
-    name: "medicalIssues",
+    name: "Medical Issues",
     placeholder: "Overweight, needs diet food, eye infection",
   },
   {
-    name: "favFood",
+    name: "Fav Foods",
     placeholder: "Mac (german brand), cheese, and tuna, but not together",
   },
   {
-    name: "vaccinations",
+    name: "Vaccinations",
     placeholder:
       "Tollwut, Katzenschnupfen, Leukose (in german) - Rabies, Feline viral rhinotracheitis, Feline leukemia",
   },
   {
-    name: "weight",
+    name: "Weight",
     placeholder: "4kg",
   },
   {
-    name: "color",
+    name: "Color",
     placeholder: "Dark tiger stripes",
   },
 ];
@@ -83,21 +83,27 @@ export default function Edit() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<CatProfileSchema>({
     resolver: zodResolver(schema),
   });
 
-  const { user } = useUser();
-
   const onSubmit = async (data: CatProfileSchema) => {
-    console.log("data", data);
+    const catProfileData = { ...data, id: uuid() };
+
     try {
       const response = await fetch("/api/cat-profile", {
         method: "POST",
-        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(catProfileData),
       });
-      const jsonResponse = await response.json();
-      console.log("Profile created:", jsonResponse);
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log("Profile created:", jsonResponse);
+      } else {
+        throw new Error("Error creating profile");
+      }
     } catch (error) {
       console.error("Error creating profile:", error);
     }
