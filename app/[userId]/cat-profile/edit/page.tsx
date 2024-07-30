@@ -1,13 +1,28 @@
 "use client";
 import z from "zod";
 import { useForm } from "react-hook-form";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { v4 as uuid } from "uuid";
-
-import { Table, TableRow } from "@/components/ui/table";
+import { Table, TableBody } from "@/components/ui/table";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/components/dashboard/InputForm";
+import { useState } from "react";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -26,7 +41,7 @@ const schema = z.object({
 
 export type CatProfileSchema = z.infer<typeof schema>;
 
-const catInfoForm = [
+const editOneForm = [
   {
     name: "Name",
     placeholder: "Whisker",
@@ -43,6 +58,14 @@ const catInfoForm = [
     name: "Breed",
     placeholder: "Domestic Short Hair",
   },
+  {
+    name: "Vaccinations",
+    placeholder:
+      "Tollwut, Katzenschnupfen, Leukose (in german) - Rabies, Feline viral rhinotracheitis, Feline leukemia",
+  },
+];
+
+const editTwoForm = [
   {
     name: "Birthdate",
     placeholder: "01.10.2016 or -",
@@ -63,11 +86,9 @@ const catInfoForm = [
     name: "Fav Foods",
     placeholder: "Mac (german brand), cheese, and tuna, but not together",
   },
-  {
-    name: "Vaccinations",
-    placeholder:
-      "Tollwut, Katzenschnupfen, Leukose (in german) - Rabies, Feline viral rhinotracheitis, Feline leukemia",
-  },
+];
+
+const editThreeForm = [
   {
     name: "Weight",
     placeholder: "4kg",
@@ -79,11 +100,9 @@ const catInfoForm = [
 ];
 
 export default function Edit() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CatProfileSchema>({
+  const [currentForm, setCurrentForm] = useState(editOneForm);
+
+  const form = useForm<CatProfileSchema>({
     resolver: zodResolver(schema),
   });
 
@@ -109,35 +128,46 @@ export default function Edit() {
     }
   };
 
-  console.log("errors", errors);
   return (
-    <div className="max-h-screen flex justify-center items-center py-4 overflow-y-scroll">
-      <Card className="w-2/3 mt-24">
-        <CardHeader>
-          <CardTitle>Edit Cat Profile</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Table>
-              {catInfoForm.map(({ name, placeholder }) => {
-                return (
-                  <TableRow key={name}>
-                    <InputForm
-                      errors={errors}
-                      register={register}
-                      name={name as keyof CatProfileSchema}
-                      placeholder={placeholder}
-                    />
-                  </TableRow>
-                );
-              })}
-              <Button className="my-8 mx-auto" type="submit">
-                Save Profile
-              </Button>
-            </Table>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="p-8 flex flex-col gap-4"
+      >
+        <div className="flex gap-4">
+          <Button type="button" onClick={() => setCurrentForm(editOneForm)}>
+            Edit One
+          </Button>
+          <Button type="button" onClick={() => setCurrentForm(editTwoForm)}>
+            Edit Two
+          </Button>
+          <Button type="button" onClick={() => setCurrentForm(editThreeForm)}>
+            Edit Three
+          </Button>
+        </div>
+        <Card className="max-h-screen h-full flex flex-col justify-center items-center py-4 overflow-y-scroll">
+          <CardHeader>
+            <CardTitle>Edit Cat Profile</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-row flex-wrap justify-start gap-8 ">
+            {currentForm.map(({ name, placeholder }) => {
+              return (
+                <InputForm
+                  key={name}
+                  name={name as keyof CatProfileSchema}
+                  placeholder={placeholder}
+                  form={form}
+                />
+              );
+            })}
+          </CardContent>
+          <CardFooter>
+            <Button className="my-8 mx-auto" type="submit">
+              Save Profile
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 }

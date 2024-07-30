@@ -27,14 +27,40 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const validatedData = schema.parse(data);
 
-    const { data: insertData, error } = await supabase
+    // Check if the id already exists in the table
+    const { data: existingData, error: fetchError } = await supabase
       .from("cat_profiles")
-      .insert([validatedData]);
+      .select("id")
+      .eq("id", validatedData.id)
+      .single();
 
-    if (error) throw error;
+    if (fetchError && fetchError.code !== "PGRST116") {
+      throw fetchError;
+    }
+
+    let responseMessage = "Profile created successfully";
+
+    if (existingData) {
+      // Update the existing row
+      const { error: updateError } = await supabase
+        .from("cat_profiles")
+        .update(validatedData)
+        .eq("id", validatedData.id);
+
+      if (updateError) throw updateError;
+
+      responseMessage = "Profile updated successfully";
+    } else {
+      // Insert a new row
+      const { error: insertError } = await supabase
+        .from("cat_profiles")
+        .insert([validatedData]);
+
+      if (insertError) throw insertError;
+    }
 
     return NextResponse.json({
-      message: "Profile created successfully",
+      message: responseMessage,
     });
   } catch (error: unknown) {
     console.error("Error:", error);
