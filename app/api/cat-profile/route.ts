@@ -8,7 +8,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const schema = z.object({
-  id: z.string().transform(() => uuid()),
+  userId: z.string().min(1),
   name: z.string().min(1),
   age: z.string().optional(),
   breed: z.string().min(1),
@@ -20,6 +20,7 @@ const schema = z.object({
   vaccinations: z.string().min(1),
   weight: z.string().optional(),
   color: z.string().optional(),
+  birthday: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -27,41 +28,49 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const validatedData = schema.parse(data);
 
-    // Check if the id already exists in the table
-    const { data: existingData, error: fetchError } = await supabase
+    // Use upsert to insert or update the row
+    const { error: upsertError } = await supabase
       .from("cat_profiles")
-      .select("id")
-      .eq("id", validatedData.id)
-      .single();
+      .upsert(validatedData);
 
-    if (fetchError && fetchError.code !== "PGRST116") {
-      throw fetchError;
-    }
+    if (upsertError) throw upsertError;
 
-    let responseMessage = "Profile created successfully";
-
-    if (existingData) {
-      // Update the existing row
-      const { error: updateError } = await supabase
-        .from("cat_profiles")
-        .update(validatedData)
-        .eq("id", validatedData.id);
-
-      if (updateError) throw updateError;
-
-      responseMessage = "Profile updated successfully";
-    } else {
-      // Insert a new row
-      const { error: insertError } = await supabase
-        .from("cat_profiles")
-        .insert([validatedData]);
-
-      if (insertError) throw insertError;
-    }
+    const responseMessage = "Profile created or updated successfully";
 
     return NextResponse.json({
       message: responseMessage,
     });
+  } catch (error: unknown) {
+    console.error("Error:", error);
+    let errorMessage = "An unknown error occurred";
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status: 400 });
+  }
+}
+
+export async function GET(req: NextRequest & { query: { userId: string } }) {
+  console.log("GET request", req.url);
+
+  try {
+    const url = new URL(req.url);
+    const userId = url.searchParams.get("userId");
+
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+
+    const { data, error } = await supabase
+      .from("cat_profiles")
+      .select()
+      .eq("userId", userId);
+
+    if (error) throw error;
+
+    return NextResponse.json({ data });
   } catch (error: unknown) {
     console.error("Error:", error);
     let errorMessage = "An unknown error occurred";

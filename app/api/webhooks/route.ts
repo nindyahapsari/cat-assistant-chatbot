@@ -60,7 +60,6 @@ export async function POST(req: Request) {
   console.log("evt", evt);
   const eventType = evt.type;
   if (eventType === "user.created" || eventType === "user.updated") {
-    console.log("User created or updated:", id, fullName, email, has_image);
     const { error } = await supabase
       .from("users")
       .upsert([{ id, fullName: fullName, email, has_image }]);

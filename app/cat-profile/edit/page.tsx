@@ -1,6 +1,9 @@
 "use client";
+import { v4 as uuid } from "uuid";
 import z from "zod";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useUser } from "@clerk/nextjs";
 import {
   Card,
   CardContent,
@@ -17,9 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { v4 as uuid } from "uuid";
-import { Table, TableBody } from "@/components/ui/table";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import InputForm from "@/components/dashboard/InputForm";
 import { useState } from "react";
@@ -101,13 +101,15 @@ const editThreeForm = [
 
 export default function Edit() {
   const [currentForm, setCurrentForm] = useState(editOneForm);
+  const { user } = useUser();
 
   const form = useForm<CatProfileSchema>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data: CatProfileSchema) => {
-    const catProfileData = { ...data, id: uuid() };
+    const userId = user?.id;
+    const catProfileData = { ...data, userId };
 
     try {
       const response = await fetch("/api/cat-profile", {

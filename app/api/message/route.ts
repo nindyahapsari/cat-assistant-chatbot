@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   });
 
   const payload: OpenAIStreamPayload = {
-    model: "gpt-3.5-turbo",
+    model: "gpt-4-turbo",
     messages: outboundMessages,
     top_p: 1,
     frequency_penalty: 0,

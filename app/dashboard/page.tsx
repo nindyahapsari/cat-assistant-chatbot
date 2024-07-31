@@ -5,15 +5,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import DashboardNav from "@/components/dashboard/DashboardNav";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -152,26 +144,7 @@ export default function Dashboard() {
                   Cat Profile
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">Name:</TableCell>
-                      <TableCell className="font-bold">Marie</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Age:</TableCell>
-                      <TableCell className="font-bold">10 years old</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Breed:</TableCell>
-                      <TableCell className="font-bold">
-                        Eurpean domestic short hair
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
+              <CardContent></CardContent>
             </Card>
             <Card>
               <CardHeader>Marie aka Bawang</CardHeader>

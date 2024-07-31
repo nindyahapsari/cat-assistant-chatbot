@@ -5,42 +5,49 @@ import {
   SignOutButton,
   SignedOut,
   useUser,
+  UserButton,
+  SignUpButton,
 } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Image from "next/image";
 
 export default function Sidebar() {
   const { user } = useUser();
   const router = useRouter();
   const path = usePathname();
 
-  useEffect(() => {
-    const params = new URLSearchParams();
-  });
+  const userId = user?.id;
 
   return (
-    <div className="bg-slate-400 h-full px-12 py-8 flex flex-col items-center desktop:col-span-2 desktop:row-span-12">
-      <div className="my-4">
-        <Link href="/">
-          <h1 className="desktop:text-2xl desktop:font-semibold">Whisker</h1>
-        </Link>
-      </div>
-      <div className="h-full w-full flex flex-col justify-end gap-y-4">
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
+    <>
+      <div className="bg-slate-100 h-full px-12  flex flex-col items-center desktop:col-span-2 desktop:row-span-12">
+        <div className="my-2">
+          <Link href="/">
+            <Image
+              alt="Product image"
+              className="aspect-square w-full rounded-md object-cover"
+              src="/assets/1.svg"
+              height="300"
+              width="300"
+            />
+          </Link>
+        </div>
+        <div className="my-8 h-full w-full flex flex-col justify-end items-center gap-4">
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button>Sign In</Button>
+            </SignInButton>
+          </SignedOut>
 
-        <SignedIn>
-          <div>
-            <Link href={`/${user?.id}/profile`}>Profile</Link>
-          </div>
-          <div>
-            <SignOutButton />
-          </div>
-        </SignedIn>
+          <SignedIn>
+            <Link href={`/cat-profile`}>Cat Profile</Link>
+            <UserButton />
+          </SignedIn>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

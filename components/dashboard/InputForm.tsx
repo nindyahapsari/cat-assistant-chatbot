@@ -1,6 +1,6 @@
 "use client";
 import { UseFormReturn } from "react-hook-form";
-import { CatProfileSchema } from "@/app/[userId]/cat-profile/edit/page";
+import { CatProfileSchema } from "@/app/cat-profile/edit/page";
 import { Input } from "@/components/ui/input";
 import {
   Form,
