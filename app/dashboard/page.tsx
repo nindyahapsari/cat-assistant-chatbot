@@ -11,7 +11,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Dashboard() {
-  const [googleApi, setGoogleApi] = useState({});
+  const [googleApi, setGoogleApi] = useState<any>({});
   const [isGoogleInit, setIsGoogleInit] = useState<boolean>(false);
   const [accessToken, setAccessToken] = useState(null);
 
@@ -24,14 +24,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     const url = `${pathname}?${searchParams}`;
-    console.log(url);
+    // console.log(url);
   }, [pathname, searchParams]);
 
   useEffect(() => {
     // Load the Google API client
     const loadGapi = async () => {
       const newGapi = await loadGapiInsideDOM();
-      console.log("newGapi", newGapi);
 
       setIsGoogleInit(true);
       setGoogleApi(newGapi);
@@ -49,7 +48,6 @@ export default function Dashboard() {
         SCOPES
       );
       if (auth2.isSignedIn.get()) {
-        console.log(`auth2 signed in`, auth2);
         setAccessToken(auth2.currentUser.get().getAuthResponse().access_token);
       } else {
         console.log(`auth2 not signed in`);
@@ -58,7 +56,6 @@ export default function Dashboard() {
           // getBasicProfile().getName() is the user's name
           // click prototype in console to see all the methods available
           // old docs:https://developers.google.com/identity/sign-in/web/reference
-          console.log(`googleUser`, googleUser);
         });
       }
     };
@@ -94,7 +91,6 @@ export default function Dashboard() {
       );
 
       const result = await response.json();
-      console.log(`result`, result);
       alert(`Event created: ${result.htmlLink}`);
     } catch (error) {
       console.error(`error`, error);

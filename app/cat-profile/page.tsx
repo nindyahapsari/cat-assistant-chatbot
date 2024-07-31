@@ -27,8 +27,6 @@ export default function CatProfile() {
           return;
         }
 
-        console.log("Fetching cats for user ID:", userId);
-
         const response = await fetch(`/api/cat-profile?userId=${userId}`, {
           method: "GET",
           headers: {

@@ -57,7 +57,6 @@ export async function POST(req: Request) {
     };
   const fullName = `${first_name} ${last_name}`;
   const email = email_addresses[0].email_address;
-  console.log("evt", evt);
   const eventType = evt.type;
   if (eventType === "user.created" || eventType === "user.updated") {
     const { error } = await supabase
