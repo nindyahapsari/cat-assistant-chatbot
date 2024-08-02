@@ -10,6 +10,8 @@ import { Message } from "@/types";
 import { MessagesContext } from "@/context/messages";
 import ChatMessages from "./ChatMessages";
 
+
+
 export default function MainChat() {
   const {
     messages,
@@ -82,10 +84,9 @@ export default function MainChat() {
   };
 
   return (
-    <div className="py-4 overflow-hidden desktop:col-start-4 desktop:col-end-12 desktop:row-span-12">
-      <div className="h-full p-4 flex flex-col">
+    <div className="w-full max-h-[calc(100vh-3.5rem)] overflow-hidden desktop:col-span-12">
+      <div className="h-full flex flex-col">
         <ChatMessages />
-
         <div className="px-4 flex w-full items-center space-x-2">
           <Textarea
             className="max-h-64 resize-none desktop:text-lg"
