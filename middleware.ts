@@ -17,17 +17,24 @@ async function rateLimitMiddleware(req: NextRequest) {
   }
 }
 
-const isProtectedRoutes = createRouteMatcher(["(.*)/profile"]);
+const isProtectedRoutes = createRouteMatcher(["(.*)/profile","/dashboard", "/cat-profile"]);
+const isRateLimitedRoutes = createRouteMatcher(["/"]);
 
 export default clerkMiddleware(async (auth, request) => {
+  
+  
   if (isProtectedRoutes(request)) {
     auth().protect();
   }
+  
+    // Apply rate limiter only to specific routes
+    if (isRateLimitedRoutes(request)) {
+      const rateLimit = await rateLimitMiddleware(request);
+      if (rateLimit){ 
+        return rateLimit;
+      }
+    }
 
-  // const rateLimit = await rateLimitMiddleware(request);
-  // if (rateLimit) return rateLimit;
-
-  return NextResponse.next();
 });
 
 // See "Matching Paths" below to learn more
@@ -39,6 +46,7 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)",
     "/",
-    "/:userId/profile(.*)",
+    "/dashboard",
+    "/cat-profile",
   ],
 };

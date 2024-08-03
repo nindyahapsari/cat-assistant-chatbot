@@ -3,14 +3,12 @@
 import { useContext, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, ChevronUp } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
+import { Loader2, ChevronUp, RefreshCw } from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { v4 as uuid } from "uuid";
 import { Message } from "@/types";
 import { MessagesContext } from "@/context/messages";
 import ChatMessages from "./ChatMessages";
-
-
 
 export default function MainChat() {
   const {
@@ -20,6 +18,7 @@ export default function MainChat() {
     updateMessage,
     setIsMessageUpdating,
   } = useContext(MessagesContext);
+
 
   const [chatInput, setChatInput] = useState<string>("");
   const { mutate: sendMessage, isPending } = useMutation({
@@ -79,17 +78,30 @@ export default function MainChat() {
       text: chatInput,
     };
 
+
     sendMessage(userInput);
     setChatInput("");
   };
 
+  const handleRefetchMessage = async () => {
+      const {text: secondLastMessage} = messages[messages.length - 2];
+
+    const userInput = {
+      id: uuid(),
+      isUserMessage: true,
+      text: secondLastMessage, 
+    };
+
+    sendMessage(userInput);
+  };
+
   return (
-    <div className="w-full max-h-[calc(100vh-3.5rem)] overflow-hidden desktop:col-span-12">
+    <div className="w-full max-h-[calc(100vh-5.5rem)] tablet:max-w-full desktop:col-span-11 desktop:max-h-[calc(98vh-5.5rem)]">
       <div className="h-full flex flex-col">
         <ChatMessages />
-        <div className="px-4 flex w-full items-center space-x-2">
+        <div className="px-4 flex w-full justify-center items-center space-x-2">
           <Textarea
-            className="max-h-64 resize-none desktop:text-lg"
+            className="max-h-64  resize-none tablet:max-w-[70%] desktop:text-lg"
             placeholder="Type your message here."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
@@ -117,6 +129,9 @@ export default function MainChat() {
               <ChevronUp aria-label="enter-button" />
             )}
           </Button>
+          <Button disabled={messages.length <= 1} onClick={handleRefetchMessage} size="sm">
+              <RefreshCw className="h-4 w-4" />
+            </Button>
         </div>
       </div>
     </div>

@@ -25,19 +25,20 @@ export async function POST(req: Request) {
     };
   });
 
+
   outboundMessages.unshift({
     role: "system",
     content: chatbotPrompt,
   });
 
   const payload: OpenAIStreamPayload = {
-    model: "gpt-4-turbo",
+    model: "gpt-4o-mini",
     messages: outboundMessages,
     top_p: 1,
     frequency_penalty: 0,
     presence_penalty: 0,
     temperature: 0.4,
-    max_tokens: 150,
+    max_tokens: 300,
     stream: true,
     n: 1,
   };
