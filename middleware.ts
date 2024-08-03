@@ -18,6 +18,7 @@ async function rateLimitMiddleware(req: NextRequest) {
 }
 
 const isProtectedRoutes = createRouteMatcher(["(.*)/profile","/dashboard", "/cat-profile"]);
+const isRateLimitedRoutes = createRouteMatcher(["/"]);
 
 export default clerkMiddleware(async (auth, request) => {
   
@@ -26,9 +27,13 @@ export default clerkMiddleware(async (auth, request) => {
     auth().protect();
   }
   
-  // rate limiter to all request
-  const rateLimit = await rateLimitMiddleware(request);
-  if (rateLimit) return rateLimit;
+    // Apply rate limiter only to specific routes
+    if (isRateLimitedRoutes(request)) {
+      const rateLimit = await rateLimitMiddleware(request);
+      if (rateLimit){ 
+        return rateLimit;
+      }
+    }
 
 });
 
@@ -43,6 +48,5 @@ export const config = {
     "/",
     "/dashboard",
     "/cat-profile",
-    "/:userId/profile(.*)",
   ],
 };
