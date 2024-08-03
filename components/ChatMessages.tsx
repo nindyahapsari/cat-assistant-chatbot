@@ -9,7 +9,7 @@ export default function ChatMessages() {
   const inverseMessages = [...messages].reverse();
 
   return (
-    <div className="h-5/6 mb-8 px-4 flex flex-col-reverse gap-3 overflow-y-scroll">
+    <div className="h-5/6 mb-8 px-4 flex flex-col-reverse gap-3">
       {inverseMessages.map(({ id, isUserMessage, text }) => {
         return (
           <div

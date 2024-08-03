@@ -84,12 +84,12 @@ export default function MainChat() {
   };
 
   return (
-    <div className="w-full max-h-[calc(100vh-3.5rem)] overflow-hidden desktop:col-span-12">
+    <div className="w-full max-h-[calc(100vh-5.5rem)] overflow-hidden desktop:col-span-12">
       <div className="h-full flex flex-col">
         <ChatMessages />
-        <div className="px-4 flex w-full items-center space-x-2">
+        <div className="px-4 flex w-full justify-center items-center space-x-2">
           <Textarea
-            className="max-h-64 resize-none desktop:text-lg"
+            className="max-h-64  resize-none tablet:max-w-[70%] desktop:text-lg"
             placeholder="Type your message here."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
