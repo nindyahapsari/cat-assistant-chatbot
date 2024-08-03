@@ -1,9 +1,7 @@
 "use client";
 import { useState, useEffect, ReactNode } from "react";
 import { useUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import Image from "next/image";
 import Loading from "@/components/Loading";
 import SidebarLinks from "@/components/Sidebar/SidebarLinks";
 import HeaderElements from "@/components/Sidebar/HeaderElements";
