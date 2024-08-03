@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${inter.className} bg-slate-200`}>
+        <body className={`${inter.className} bg-slate-200 overflow-hidden`}>
             <Sidebar>
             {children}
             </Sidebar>          
