@@ -19,7 +19,8 @@ type SidebarLinks = {
   
 
 export default function HeaderElements({ sidebarLinksInfo }: { sidebarLinksInfo: SidebarLinks[] }) {
-    return (
+  console.log('sidebar', sidebarLinksInfo)  
+  return (
         <>
          <Sheet>
             <SheetTrigger asChild>
