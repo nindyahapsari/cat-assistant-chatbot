@@ -19,6 +19,7 @@ export default function MainChat() {
     setIsMessageUpdating,
   } = useContext(MessagesContext);
 
+
   const [chatInput, setChatInput] = useState<string>("");
   const { mutate: sendMessage, isPending } = useMutation({
     mutationKey: ["sendMessage"],
@@ -76,6 +77,7 @@ export default function MainChat() {
       isUserMessage: true,
       text: chatInput,
     };
+
 
     sendMessage(userInput);
     setChatInput("");
