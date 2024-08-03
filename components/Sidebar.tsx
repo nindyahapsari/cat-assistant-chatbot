@@ -59,8 +59,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 mobile:max-w-screen desktop:h-[60px] desktop:px-6">
           <HeaderElements sidebarLinksInfo={SIDEBARLINKSINFO} />
         </header>
-        <main className="mobile:max-w-[375px] flex flex-1 flex-col gap-4 p-4 tablet:max-w-[1440px] tablet:max-h-[calc(80vh-60px)]">
-          <div className="mobile:overflow-scroll tablet:overflow-visible tablet:w-[calc(100vw-220px)] desktop:w-[calc(95vw-280px)]">
+        <main className="mobile:max-w-[375px] flex flex-1 flex-col gap-4 p-4 tablet:max-w-[1440px] tablet:max-h-[calc(100vh-60px)]">
+          <div className="mobile:overflow-scroll tablet:overflow-auto tablet:w-[calc(90vw-220px)] desktop:w-[calc(95vw-280px)]">
             {children}
           </div>
         </main>
