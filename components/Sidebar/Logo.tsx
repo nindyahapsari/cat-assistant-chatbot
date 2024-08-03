@@ -10,10 +10,10 @@ export default function Logo() {
       >
         <Image
           alt="logo"
-          className="scale-125"
+          className="scale-150"
           src="/assets/2.svg"
           width={100}
-          height={100}
+          height={50}
         />
         <span className="">Whisker</span>
       </Link>

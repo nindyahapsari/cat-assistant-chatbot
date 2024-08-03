@@ -45,10 +45,10 @@ export default function Sidebar({ children }: { children: ReactNode }) {
     <div className="grid max-h-screen w-full tablet:grid-cols-[220px_1fr] desktop:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 tablet:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
-          <div className="flex h-14 items-center border-b px-4 desktop:h-[60px] desktop:px-6">
+          <div className="flex h-14 items-center border-b px-4 desktop:h-[100px] desktop:px-6">
             <Logo />
           </div>
-          <div className="flex-1 min-h-[calc(100vh-3.5rem)]">
+          <div className="z-10 flex-1 min-h-[calc(100vh-3.5rem)]">
             <nav className="grid items-start px-2 text-sm font-medium desktop:px-4">
               <SidebarLinks sidebarLinksInfo={SIDEBARLINKSINFO} />
             </nav>
