@@ -19,7 +19,6 @@ type SidebarLinks = {
   
 
 export default function HeaderElements({ sidebarLinksInfo }: { sidebarLinksInfo: SidebarLinks[] }) {
-  console.log('sidebar', sidebarLinksInfo)  
   return (
         <>
          <Sheet>
