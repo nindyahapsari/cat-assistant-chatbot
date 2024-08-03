@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import {
   SignInButton,
   SignedIn,
@@ -42,7 +42,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 
-export default function Sidebar({children}) {
+
+export default function Sidebar({children}: {children: ReactNode}) {
 
   const [isClient, setIsClient] = useState(false);
   const { user } = useUser();
