@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({ weight: ["400", "500"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "cat-chat",
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${inter.className} bg-slate-200 overflow-hidden`}>
+        <body className={`${poppins.className} bg-whisker-white overflow-hidden`}>
             <Sidebar>
             {children}
             </Sidebar>          

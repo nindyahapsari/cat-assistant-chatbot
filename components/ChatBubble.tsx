@@ -13,9 +13,9 @@ export default function ChatBubble({
   return (
     <Card
       className={cn(
-        "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-slate-100 rounded-lg desktop:max-w-xl desktop:text-lg",
+        "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-whisker-orange text-whisker-black rounded-lg desktop:max-w-xl desktop:text-lg",
         {
-          "bg-neutral-200": isUserMessage,
+          "bg-whisker-darkBlue text-whisker-white": isUserMessage,
         }
       )}
     >
