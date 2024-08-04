@@ -121,6 +121,7 @@ export default function MainChat() {
             disabled={isPending || !chatInput}
             type="submit"
             size="icon"
+            className="bg-whisker-darkBlue"
             onClick={handleSendMessage}
           >
             {isPending ? (
@@ -129,7 +130,7 @@ export default function MainChat() {
               <ChevronUp aria-label="enter-button" />
             )}
           </Button>
-          <Button disabled={messages.length <= 1} onClick={handleRefetchMessage} size="sm">
+          <Button className="bg-whisker-darkBlue" disabled={messages.length <= 1} onClick={handleRefetchMessage} size="sm">
               <RefreshCw className="h-4 w-4" />
             </Button>
         </div>
