@@ -22,7 +22,7 @@ export default function ChatBubble({
       {!isUserMessage ? (
         <CardHeader className="min-w-20 w-20 items-center">
           <Image
-            src="/assets/pawprint-6503.svg"
+            src="/assets/pawprint.svg"
             alt="Cat Assistant"
             className="object-fill"
             width={50}

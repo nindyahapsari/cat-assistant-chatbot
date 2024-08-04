@@ -3,16 +3,17 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import CardProfile from "@/components/catProfile/CardProfile";
+import CatInfoTable from "@/components/catProfile/CatInfoTable";
 
 export default function CatProfile() {
   const { user } = useUser();
@@ -58,75 +59,57 @@ export default function CatProfile() {
       </div>
 
       <div className="py-8 w-full h-full flex flex-row justify-start items-center gap-4 desktop:overflow-x-scroll desktop:flex-row">
-        {cats.map(
-          ({
-            id,
-            name,
-            age,
-            breed,
-            birthdate,
-            vet_clinic,
-            chip_number,
-            medical_issues,
-            fav_food,
-            vaccinations,
-            weight,
-            color,
-          }) => {
-            return (
-              <div key={id}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Table>
-                      <TableRow>
-                        <TableCell>Age</TableCell>
-                        <TableCell>{age}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Breed</TableCell>
-                        <TableCell>{breed}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Birthdate</TableCell>
-                        <TableCell>{birthdate}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Vet Clinic</TableCell>
-                        <TableCell>{vet_clinic}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Chip Number</TableCell>
-                        <TableCell>{chip_number}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Medical Issues</TableCell>
-                        <TableCell>{medical_issues}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Favorite Food</TableCell>
-                        <TableCell>{fav_food}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Vaccinations</TableCell>
-                        <TableCell>{vaccinations}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Weight</TableCell>
-                        <TableCell>{weight}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Color</TableCell>
-                        <TableCell>{color}</TableCell>
-                      </TableRow>
-                    </Table>
-                  </CardContent>
-                </Card>
-              </div>
-            );
-          }
+        {cats.length > 1 ? (
+          <div className="border rounded-lg p-4 my-auto">
+            <p>
+              No cat info found! Add cat info with the button above
+                </p>
+          </div>
+        ) : (
+          cats.map(
+            ({
+              id,
+              name,
+              age,
+              breed,
+              birthdate,
+              vet_clinic,
+              chip_number,
+              medical_issues,
+              fav_food,
+              vaccinations,
+              weight,
+              color,
+            }) => {
+              return (
+                <Dialog key={id}>
+                  <DialogTrigger>
+                    <CardProfile name={name} />
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{name}</DialogTitle>
+                      <DialogDescription>
+                        <CatInfoTable
+                          name={name}
+                          age={age}
+                          breed={breed}
+                          birthdate={birthdate}
+                          vetClinic={vet_clinic}
+                          chipNumber={chip_number}
+                          medicalIssues={medical_issues}
+                          favFood={fav_food}
+                          vaccinations={vaccinations}
+                          weight={weight}
+                          color={color}
+                        />
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              );
+            }
+          )
         )}
       </div>
     </div>
