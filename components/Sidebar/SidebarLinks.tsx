@@ -15,7 +15,7 @@ export default function SidebarLinks({ sidebarLinksInfo }: { sidebarLinksInfo: S
       <Link
         key={path}
         href={path}
-        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+        className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-whisker-orange"
       >
         {icon}
         {name}

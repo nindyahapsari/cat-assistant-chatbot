@@ -57,6 +57,13 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        whisker: {
+          black: "#000000",
+          darkBlue: "#14213D",
+          orange: "#FCA311",
+          gray: "#E5E5E5",
+          white: "#FFFFFF",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
