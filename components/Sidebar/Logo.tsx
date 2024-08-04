@@ -13,7 +13,7 @@ export default function Logo() {
           className="scale-150"
           src="/assets/2.svg"
           width={100}
-          height={50}
+          height={100}
         />
         <span className="">Whisker</span>
       </Link>
