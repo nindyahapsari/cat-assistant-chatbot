@@ -29,7 +29,7 @@ const schema = z.object({
 
 export type CatProfileSchema = z.infer<typeof schema>;
 
-export default function Edit() {
+export default function Add() {
   const [currentStep, setCurrentStep] = useState(1);
   const { user } = useUser();
 
@@ -63,6 +63,7 @@ export default function Edit() {
   const nextStep = () => setCurrentStep((prev) => prev + 1);
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
+  const errors = form.formState.errors;
   return (
     <Form {...form}>
       <form
