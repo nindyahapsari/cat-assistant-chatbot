@@ -59,9 +59,9 @@ export default function HeaderElements({ sidebarLinksInfo }: { sidebarLinksInfo:
               <SignInButton mode="modal">
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-whisker-darkBlue mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
-                  <CircleUser className="h-5 w-5" />
+                  <CircleUser className="h-5 w-5 text-whisker-darkBlue" />
                   Sign In
                 </Link>
               </SignInButton>
