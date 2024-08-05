@@ -14,11 +14,26 @@ import {
 } from "@/components/ui/dialog";
 import CardProfile from "@/components/catProfile/CardProfile";
 import CatInfoTable from "@/components/catProfile/CatInfoTable";
+import { CatProfileProps } from "@/types";
+import { convertSnakeCaseToCamelCase } from "@/lib/utils";
+
+
+type CatProfileConvertedProps = {
+  [key: string]: string;
+} & CatProfileProps;
 
 export default function CatProfile() {
   const { user } = useUser();
-  const userId = user?.id;
-  const [cats, setCats] = useState([]);
+  const userId: string | undefined = user?.id as string;
+  const [catsInfo, setCatsInfo] = useState<{
+    isLoading: boolean, 
+    data: CatProfileProps[], 
+    error: string | null}>
+    ({
+    isLoading: false,
+    data: [],
+    error: null,
+  });
 
   useEffect(() => {
     const getCats = async () => {
@@ -40,13 +55,47 @@ export default function CatProfile() {
         }
 
         const { data } = await response.json();
-        setCats(data);
+        const convertKeysToCamelCase = (data: CatProfileConvertedProps[]): CatProfileConvertedProps[] => {
+          return data.map((item) => {
+            const convertedItem: CatProfileConvertedProps = {
+              name: "",
+              age: "",
+              breed: "",
+              birthdate: "",
+              vetClinic: "",
+              chipNumber: "",
+              medicalIssues: "",
+              favFood: "",
+              vaccinations: "",
+              weight: "",
+              color: "",
+            };
+            for (const key in item) {
+              if (Object.prototype.hasOwnProperty.call(item, key)) {
+          const camelCaseKey = convertSnakeCaseToCamelCase(key);
+          convertedItem[camelCaseKey] = item[key] || ""; 
+              }
+            }
+            return convertedItem;
+          });
+        };
+
+        const convertedData: CatProfileProps[] = convertKeysToCamelCase(data);
+        setCatsInfo({ isLoading: false, data: convertedData, error: null });
+        
+
+        setCatsInfo({ isLoading: false, data, error: null });
 
         // console.log("ERROR", error);
-      } catch (error) {
-        console.error("Error fetching cats:", error);
+      } catch (error ) {
+        if(error instanceof Error) {
+          setCatsInfo({ isLoading: false, data: [], error: error.message });
+        } else {
+
+          console.error("Error fetching cats:", error);
       }
-    };
+    }
+  };
     getCats();
   }, [userId]);
 
@@ -59,24 +108,24 @@ export default function CatProfile() {
       </div>
 
       <div className="py-8 w-full h-full flex flex-row justify-start items-center gap-4 desktop:overflow-x-scroll desktop:flex-row">
-        {cats.length > 1 ? (
+        {catsInfo.data.length === 0 ? (
           <div className="border rounded-lg p-4 my-auto">
             <p>
               No cat info found! Add cat info with the button above
                 </p>
           </div>
         ) : (
-          cats.map(
+          catsInfo.data.map(
             ({
               id,
               name,
               age,
               breed,
               birthdate,
-              vet_clinic,
-              chip_number,
-              medical_issues,
-              fav_food,
+              vetClinic,
+              chipNumber,
+              medicalIssues,
+              favFood,
               vaccinations,
               weight,
               color,
@@ -95,10 +144,10 @@ export default function CatProfile() {
                           age={age}
                           breed={breed}
                           birthdate={birthdate}
-                          vetClinic={vet_clinic}
-                          chipNumber={chip_number}
-                          medicalIssues={medical_issues}
-                          favFood={fav_food}
+                          vetClinic={vetClinic}
+                          chipNumber={chipNumber}
+                          medicalIssues={medicalIssues}
+                          favFood={favFood}
                           vaccinations={vaccinations}
                           weight={weight}
                           color={color}

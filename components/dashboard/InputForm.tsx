@@ -30,10 +30,16 @@ type FormFields = {
 type InputFormProps = {
   form: UseFormReturn<FormFields>;
   name: keyof FormFields;
+  required?: boolean;
   placeholder?: string;
 };
 
-export default function InputForm({ form, name, placeholder }: InputFormProps) {
+export default function InputForm({
+  form,
+  name,
+  placeholder,
+  required,
+}: InputFormProps) {
   function spaceSeparatedToUnderscore(name: string): string {
     return name.replace(/\s+/g, "_").toLowerCase();
   }
@@ -50,7 +56,13 @@ export default function InputForm({ form, name, placeholder }: InputFormProps) {
             <FormControl>
               <Input placeholder={placeholder} {...field} />
             </FormControl>
-            <FormDescription>This is your public display name.</FormDescription>
+            <FormDescription>
+              {required ? (
+                <p className="font-bold">This field is required</p>
+              ) : (
+                <p>Not required but good to have</p>
+              )}
+            </FormDescription>
             <FormMessage />
           </FormItem>
         )}

@@ -1,28 +1,16 @@
 "use client";
-import { v4 as uuid } from "uuid";
 import z from "zod";
 import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUser } from "@clerk/nextjs";
+
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+  Form
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import InputForm from "@/components/dashboard/InputForm";
 import { useState } from "react";
+import { StepOne, StepThree, StepTwo } from "@/components/catProfile/forms/StepsForm";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -41,66 +29,8 @@ const schema = z.object({
 
 export type CatProfileSchema = z.infer<typeof schema>;
 
-const editOneForm = [
-  {
-    name: "Name",
-    placeholder: "Whisker",
-  },
-  {
-    name: "Age",
-    placeholder: "10",
-  },
-  {
-    name: "City",
-    placeholder: "Berlin",
-  },
-  {
-    name: "Breed",
-    placeholder: "Domestic Short Hair",
-  },
-  {
-    name: "Vaccinations",
-    placeholder:
-      "Tollwut, Katzenschnupfen, Leukose (in german) - Rabies, Feline viral rhinotracheitis, Feline leukemia",
-  },
-];
-
-const editTwoForm = [
-  {
-    name: "Birthdate",
-    placeholder: "01.10.2016 or -",
-  },
-  {
-    name: "Vet Clinic",
-    placeholder: "Neukölln vet clinic, Berlin",
-  },
-  {
-    name: "Chip Number",
-    placeholder: "XB123456",
-  },
-  {
-    name: "Medical Issues",
-    placeholder: "Overweight, needs diet food, eye infection",
-  },
-  {
-    name: "Fav Foods",
-    placeholder: "Mac (german brand), cheese, and tuna, but not together",
-  },
-];
-
-const editThreeForm = [
-  {
-    name: "Weight",
-    placeholder: "4kg",
-  },
-  {
-    name: "Color",
-    placeholder: "Dark tiger stripes",
-  },
-];
-
 export default function Edit() {
-  const [currentForm, setCurrentForm] = useState(editOneForm);
+  const [currentStep, setCurrentStep] = useState(1);
   const { user } = useUser();
 
   const form = useForm<CatProfileSchema>({
@@ -130,45 +60,39 @@ export default function Edit() {
     }
   };
 
+  const nextStep = () => setCurrentStep((prev) => prev + 1);
+  const prevStep = () => setCurrentStep((prev) => prev - 1);
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="p-8 flex flex-col gap-4"
+        className="p-8 flex justify-center flex-col gap-4"
       >
-        <div className="flex gap-4">
-          <Button type="button" onClick={() => setCurrentForm(editOneForm)}>
-            Edit One
-          </Button>
-          <Button type="button" onClick={() => setCurrentForm(editTwoForm)}>
-            Edit Two
-          </Button>
-          <Button type="button" onClick={() => setCurrentForm(editThreeForm)}>
-            Edit Three
-          </Button>
+        <div className=" tablet:min-h-[calc(70vh-3rem)]">
+        {currentStep === 1 && <StepOne form={form} />}
+        {currentStep === 2 && <StepTwo form={form} />}
+        {currentStep === 3 && <StepThree form={form} />}
         </div>
-        <Card className="max-h-screen h-full flex flex-col justify-center items-center py-4 overflow-y-scroll">
-          <CardHeader>
-            <CardTitle>Edit Cat Profile</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-row flex-wrap justify-start gap-8 ">
-            {currentForm.map(({ name, placeholder }) => {
-              return (
-                <InputForm
-                  key={name}
-                  name={name as keyof CatProfileSchema}
-                  placeholder={placeholder}
-                  form={form}
-                />
-              );
-            })}
-          </CardContent>
-          <CardFooter>
-            <Button className="my-8 mx-auto" type="submit">
+
+        <div className="flex justify-center gap-4">
+          {currentStep > 1 && (
+            <Button type="button" onClick={prevStep}>
+              Previous
+            </Button>
+          )}
+          {currentStep < 3 && (
+            <Button type="button" onClick={nextStep}>
+              Next
+            </Button>
+          )}
+          {currentStep === 3 && (
+            <Button type="submit">
               Save Profile
             </Button>
-          </CardFooter>
-        </Card>
+          )}
+        </div>
+      
       </form>
     </Form>
   );

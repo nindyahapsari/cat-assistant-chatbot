@@ -7,20 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CatProfileProps } from "@/types";
 
-type CatProfileProps = {
-  name: string;
-  age: string;
-  breed: string;
-  birthdate: string;
-  vetClinic: string;
-  chipNumber: string;
-  medicalIssues: string;
-  favFood: string;
-  vaccinations: string;
-  weight: string;
-  color: string;
-};
+
 
 export default function CatInfoTable({
   age,
