@@ -5,7 +5,7 @@ import {
     CardHeader,
     CardTitle,
   } from "@/components/ui/card";
-import { CatProfileSchema } from "@/app/cat-profile/edit/page";
+import { CatProfileSchema } from "@/app/cat-profile/add/page";
 
 import InputForm from "@/components/dashboard/InputForm";
 

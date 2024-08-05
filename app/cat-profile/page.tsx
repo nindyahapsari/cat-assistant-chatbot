@@ -103,7 +103,7 @@ export default function CatProfile() {
     <div className="p-8 flex flex-col justify-center">
       <div>
         <Button className="border border-whisker-darkBlue bg-whisker-darkBlue text-whisker-white">
-          <Link href={`/cat-profile/edit`}>Add Cat Profile</Link>
+          <Link href={`/cat-profile/add`}>Add Cat Profile</Link>
         </Button>
       </div>
 
