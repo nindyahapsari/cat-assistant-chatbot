@@ -96,7 +96,7 @@ export default function MainChat() {
   };
 
   return (
-    <div className="w-full max-h-[calc(100vh-5.5rem)] tablet:max-w-full desktop:col-span-11 desktop:max-h-[calc(98vh-5.5rem)]">
+    <div className="w-full max-h-[calc(100vh-5.5rem)] tablet:h-[calc(90vh-5.5rem)] tablet:max-w-full desktop:col-span-11 desktop:max-h-[calc(98vh-5.5rem)]">
       <div className="h-full flex flex-col">
         <ChatMessages />
         <div className="px-4 flex w-full justify-center items-center space-x-2">
