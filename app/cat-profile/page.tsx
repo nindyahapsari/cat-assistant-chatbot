@@ -3,25 +3,42 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import CardProfile from "@/components/catProfile/CardProfile";
+import CatInfoTable from "@/components/catProfile/CatInfoTable";
+import { CatProfileProps } from "@/types";
+import { convertSnakeCaseToCamelCase } from "@/lib/utils";
+import Loading from "@/components/Loading";
+
+type CatProfileConvertedProps = {
+  [key: string]: string;
+} & CatProfileProps;
 
 export default function CatProfile() {
   const { user } = useUser();
-  const userId = user?.id;
-  const [cats, setCats] = useState([]);
+  const userId: string | undefined = user?.id as string;
+  const [catsInfo, setCatsInfo] = useState<{
+    isLoading: boolean;
+    data: CatProfileProps[];
+    error: string | null;
+  }>({
+    isLoading: false,
+    data: [],
+    error: null,
+  });
 
   useEffect(() => {
     const getCats = async () => {
       try {
+        setCatsInfo({ isLoading: true, data: [], error: null });
         if (!userId) {
           console.error("User ID is undefined or null");
           return;
@@ -39,11 +56,41 @@ export default function CatProfile() {
         }
 
         const { data } = await response.json();
-        setCats(data);
+        const convertKeysToCamelCase = (
+          data: CatProfileConvertedProps[]
+        ): CatProfileConvertedProps[] => {
+          return data.map((item) => {
+            const convertedItem: CatProfileConvertedProps = {
+              name: "",
+              age: "",
+              breed: "",
+              birthdate: "",
+              vetClinic: "",
+              chipNumber: "",
+              medicalIssues: "",
+              favFood: "",
+              vaccinations: "",
+              weight: "",
+              color: "",
+            };
+            for (const key in item) {
+              if (Object.prototype.hasOwnProperty.call(item, key)) {
+                const camelCaseKey = convertSnakeCaseToCamelCase(key);
+                convertedItem[camelCaseKey] = item[key] || "";
+              }
+            }
+            return convertedItem;
+          });
+        };
 
-        // console.log("ERROR", error);
+        const convertedData: CatProfileProps[] = convertKeysToCamelCase(data);
+        setCatsInfo({ isLoading: false, data: convertedData, error: null });
       } catch (error) {
-        console.error("Error fetching cats:", error);
+        if (error instanceof Error) {
+          setCatsInfo({ isLoading: false, data: [], error: error.message });
+        } else {
+          console.error("Error fetching cats:", error);
+        }
       }
     };
     getCats();
@@ -51,84 +98,70 @@ export default function CatProfile() {
 
   return (
     <div className="p-8 flex flex-col justify-center">
-      <div>
-        <Button className="border border-whisker-darkBlue bg-whisker-darkBlue text-whisker-white">
-          <Link href={`/cat-profile/edit`}>Add Cat Profile</Link>
-        </Button>
-      </div>
+      {catsInfo.isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div>
+            <Button className="border border-whisker-darkBlue bg-whisker-darkBlue text-whisker-white">
+              <Link href={`/cat-profile/add`}>Add Cat Profile</Link>
+            </Button>
+          </div>
 
-      <div className="py-8 w-full h-full flex flex-row justify-start items-center gap-4 desktop:overflow-x-scroll desktop:flex-row">
-        {cats.map(
-          ({
-            id,
-            name,
-            age,
-            breed,
-            birthdate,
-            vet_clinic,
-            chip_number,
-            medical_issues,
-            fav_food,
-            vaccinations,
-            weight,
-            color,
-          }) => {
-            return (
-              <div key={id}>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Table>
-                      <TableRow>
-                        <TableCell>Age</TableCell>
-                        <TableCell>{age}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Breed</TableCell>
-                        <TableCell>{breed}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Birthdate</TableCell>
-                        <TableCell>{birthdate}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Vet Clinic</TableCell>
-                        <TableCell>{vet_clinic}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Chip Number</TableCell>
-                        <TableCell>{chip_number}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Medical Issues</TableCell>
-                        <TableCell>{medical_issues}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Favorite Food</TableCell>
-                        <TableCell>{fav_food}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Vaccinations</TableCell>
-                        <TableCell>{vaccinations}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Weight</TableCell>
-                        <TableCell>{weight}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Color</TableCell>
-                        <TableCell>{color}</TableCell>
-                      </TableRow>
-                    </Table>
-                  </CardContent>
-                </Card>
+          <div className="py-8 w-full h-full flex flex-row justify-start items-center gap-4 desktop:overflow-x-scroll desktop:flex-row">
+            {catsInfo.data.length === 0 ? (
+              <div className="border rounded-lg p-4 my-auto">
+                <p>No cat info found! Add cat info with the button above</p>
               </div>
-            );
-          }
-        )}
-      </div>
+            ) : (
+              catsInfo.data.map(
+                ({
+                  id,
+                  name,
+                  age,
+                  breed,
+                  birthdate,
+                  vetClinic,
+                  chipNumber,
+                  medicalIssues,
+                  favFood,
+                  vaccinations,
+                  weight,
+                  color,
+                }) => {
+                  return (
+                    <Dialog key={id}>
+                      <DialogTrigger>
+                        <CardProfile name={name} />
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>{name}</DialogTitle>
+                          <DialogDescription>
+                            <CatInfoTable
+                              name={name}
+                              age={age}
+                              breed={breed}
+                              birthdate={birthdate}
+                              vetClinic={vetClinic}
+                              chipNumber={chipNumber}
+                              medicalIssues={medicalIssues}
+                              favFood={favFood}
+                              vaccinations={vaccinations}
+                              weight={weight}
+                              color={color}
+                            />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  );
+                }
+              )
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

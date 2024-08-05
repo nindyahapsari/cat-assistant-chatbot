@@ -10,6 +10,50 @@
 // import Link from "next/link";
 // import { usePathname, useSearchParams } from "next/navigation";
 
+import Link from "next/link";
+import {
+  Activity,
+  ArrowUpRight,
+  Calendar,
+  Cat,
+  CircleUser,
+  Clock,
+  CreditCard,
+  DollarSign,
+  Menu,
+  Package2,
+  Search,
+  Users,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 // export default function Dashboard() {
 //   const [googleApi, setGoogleApi] = useState<any>({});
 //   const [isGoogleInit, setIsGoogleInit] = useState<boolean>(false);
@@ -167,5 +211,128 @@
 // }
 
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  return (
+    <div className="w-full flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+      <div className="grid gap-4 tablet:grid-cols-2 tablet:gap-8 desktop:grid-cols-4">
+        <Card x-chunk="dashboard-01-chunk-0">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Cats</CardTitle>
+            <Cat className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">1</div>
+            <p className="text-xs text-muted-foreground">
+              Number of cats you own
+            </p>
+          </CardContent>
+        </Card>
+        <Card x-chunk="dashboard-01-chunk-3">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Recent Activities
+            </CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">5</div>
+            <p className="text-xs text-muted-foreground">
+              Activities in the last 24 hours
+            </p>
+          </CardContent>
+        </Card>
+        <Card x-chunk="dashboard-01-chunk-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Upcoming Vet Appointments</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">2</div>
+            <p className="text-xs text-muted-foreground">
+              Appointments in the next week
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card x-chunk="dashboard-01-chunk-3">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Feeding Schedule</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">Next: 6 PM</div>
+            <p className="text-xs text-muted-foreground">
+              Last fed at 12 PM
+            </p>
+          </CardContent>
+        </Card>
+        
+      </div>
+      <div className="grid gap-4 tablet:gap-8 desktop:grid-cols-2">
+            <Card x-chunk="dashboard-01-chunk-4">
+              <CardHeader>
+                <CardTitle>Recent Activities</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-8">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Cat Name</TableHead>
+                      <TableHead >Activity</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <div className="font-medium">Whiskers</div>
+                      </TableCell>
+                      <TableCell>Feeding</TableCell>
+                      <TableCell>
+                        <Badge className="text-xs" variant="outline">
+                          Completed
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        2023-10-01
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+          </CardContent>
+        </Card>
+        <Card x-chunk="dashboard-01-chunk-5">
+  <CardHeader>
+    <CardTitle>Upcoming Vet Appointments</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Cat Name</TableHead>
+          <TableHead>Clinic</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Time</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>
+            <div className="font-medium">Whiskers</div>
+          </TableCell>
+          <TableCell>Watson Neuköln Clinic</TableCell>
+          <TableCell>
+            2023-10-05
+          </TableCell>
+          <TableCell>
+            10:00 AM
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </CardContent>
+</Card>
+      </div>
+    </div>
+  );
 }
