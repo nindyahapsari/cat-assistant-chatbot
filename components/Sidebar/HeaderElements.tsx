@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Cat, CircleUser, Layout, Menu, Search } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
-import Image from "next/image";
 import Logo from "@/components/Sidebar/Logo";
 
 type SidebarLinks = {
@@ -59,9 +58,9 @@ export default function HeaderElements({ sidebarLinksInfo }: { sidebarLinksInfo:
               <SignInButton mode="modal">
                 <Link
                   href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-whisker-darkBlue hover:text-whisker-orange mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
-                  <CircleUser className="h-5 w-5" />
+                  <CircleUser className="h-5 w-5 text-whisker-darkBlue hover:text-whisker-orange" />
                   Sign In
                 </Link>
               </SignInButton>

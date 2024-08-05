@@ -27,14 +27,15 @@ export default clerkMiddleware(async (auth, request) => {
     auth().protect();
   }
   
-    // Apply rate limiter only to specific routes
-    if (isRateLimitedRoutes(request)) {
-      const rateLimit = await rateLimitMiddleware(request);
-      if (rateLimit){ 
-        return rateLimit;
-      }
-    }
+    // // Apply rate limiter only to specific routes
+    // if (isRateLimitedRoutes(request)) {
+    //   const rateLimit = await rateLimitMiddleware(request);
+    //   if (rateLimit){ 
+    //     return rateLimit;
+    //   }
+    // }
 
+  return NextResponse.next();    
 });
 
 // See "Matching Paths" below to learn more

@@ -35,7 +35,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 
   if (!isClient) {
     return (
-      <div className="w-60 flex justify-center">
+      <div className="w-full flex justify-center">
         <Loading />
       </div>
     );
