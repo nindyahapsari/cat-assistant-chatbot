@@ -8,7 +8,7 @@ import HeaderElements from "@/components/Sidebar/HeaderElements";
 import Logo from "@/components/Sidebar/Logo";
 import { Cat, Layout } from "lucide-react";
 
-const SIDEBARLINKSINFO = [
+export const SIDEBARLINKSINFO = [
   {
     path: "/dashboard",
     name: "Dashboard",
