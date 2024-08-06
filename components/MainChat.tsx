@@ -1,6 +1,7 @@
 "use client";
 
 import { useContext, useState } from "react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, ChevronUp, RefreshCw } from "lucide-react";
@@ -9,6 +10,9 @@ import { v4 as uuid } from "uuid";
 import { Message } from "@/types";
 import { MessagesContext } from "@/context/messages";
 import ChatMessages from "./ChatMessages";
+
+const chatInputSchema = z.string().trim().min(1, "Chat input cannot be empty");
+
 
 export default function MainChat() {
   const {
@@ -95,7 +99,7 @@ export default function MainChat() {
     sendMessage(userInput);
   };
 
-  const isChatInputValid = !chatInput.match(/\n/) && chatInput.trim() !== "";
+  const isChatInputValid = chatInputSchema.safeParse(chatInput).success;
 
   return (
     <div className="w-full max-h-[calc(100vh-5.5rem)] tablet:h-[calc(90vh-5.5rem)] tablet:max-w-full desktop:col-span-11 desktop:max-h-[calc(98vh-5.5rem)]">
