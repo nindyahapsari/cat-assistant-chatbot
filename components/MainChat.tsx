@@ -95,13 +95,15 @@ export default function MainChat() {
     sendMessage(userInput);
   };
 
+  const isChatInputValid = !chatInput.match(/\n/) && chatInput.trim() !== "";
+
   return (
     <div className="w-full max-h-[calc(100vh-5.5rem)] tablet:h-[calc(90vh-5.5rem)] tablet:max-w-full desktop:col-span-11 desktop:max-h-[calc(98vh-5.5rem)]">
       <div className="h-full flex flex-col">
         <ChatMessages />
         <div className="px-4 flex w-full justify-center items-center space-x-2">
           <Textarea
-            className="max-h-64  resize-none tablet:max-w-[70%] desktop:text-lg"
+            className="my-2 max-h-64  resize-none tablet:max-w-[70%] desktop:text-lg"
             placeholder="Type your message here."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
@@ -109,8 +111,7 @@ export default function MainChat() {
               if (
                 e.key === "Enter" &&
                 !e.shiftKey &&
-                !chatInput.match(/\n/) &&
-                chatInput !== ""
+                isChatInputValid
               ) {
                 e.preventDefault();
                 handleSendMessage();
@@ -118,7 +119,7 @@ export default function MainChat() {
             }}
           />
           <Button
-            disabled={isPending || !chatInput}
+            disabled={isPending || !isChatInputValid}
             type="submit"
             size="icon"
             className="bg-whisker-darkBlue"
