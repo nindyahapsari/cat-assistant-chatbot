@@ -1,7 +1,11 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ChatResponsePDF from "@/components/ChatResponsePDF";
+import { Button } from '@/components/ui/button';
+import { Download, Loader2 } from "lucide-react";
 
 export default function ChatBubble({
   isUserMessage,
@@ -11,6 +15,7 @@ export default function ChatBubble({
   text: string;
 }) {
   return (
+    <>
     <Card
       className={cn(
         "text-md flex flex-row items-start gap-2 py-2 my-4 px-2 bg-whisker-orange text-whisker-black rounded-lg desktop:max-w-xl desktop:text-lg",
@@ -35,9 +40,32 @@ export default function ChatBubble({
           {isUserMessage ? "You" : "Whisker"}
         </h4>
         <div className="whitespace-pre-line">
-          <ReactMarkdown>{text}</ReactMarkdown>
+          <ReactMarkdown className="leading-tight mb-2">{text}</ReactMarkdown>
         </div>
+        
       </CardContent>
     </Card>
+    {!isUserMessage && (
+          <Button
+            size='sm'
+            className="text-whisker-white mt-2"
+            onClick={() => {
+              // handle button click event
+            }}
+          >
+            <PDFDownloadLink
+              document={<ChatResponsePDF text={text} />}
+              fileName="chat-response.pdf"
+            >
+              {({ loading }) => (
+                <>
+                  
+                  {loading ? <Loader2/> : <Download className="inline-block" />}
+                </>
+              )}
+            </PDFDownloadLink>
+          </Button>
+        )}
+    </>
   );
 }

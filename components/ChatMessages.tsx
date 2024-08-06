@@ -3,9 +3,6 @@ import { MessagesContext } from "@/context/messages";
 import { cn } from "@/lib/utils";
 
 import ChatBubble from "./ChatBubble";
-import { Button } from "@/components/ui/button";
-import { RefreshCw } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ChatMessages() {
   const { messages } = useContext(MessagesContext);

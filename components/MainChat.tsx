@@ -1,14 +1,24 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { z } from "zod";
 import { Loader2, ChevronUp, RefreshCw } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { v4 as uuid } from "uuid";
 import { Message } from "@/types";
 import { MessagesContext } from "@/context/messages";
 import ChatMessages from "./ChatMessages";
+
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+const chatInputSchema = z.string().trim().min(1, "Chat input cannot be empty");
 
 export default function MainChat() {
   const {
@@ -18,7 +28,6 @@ export default function MainChat() {
     updateMessage,
     setIsMessageUpdating,
   } = useContext(MessagesContext);
-
 
   const [chatInput, setChatInput] = useState<string>("");
   const { mutate: sendMessage, isPending } = useMutation({
@@ -78,22 +87,23 @@ export default function MainChat() {
       text: chatInput,
     };
 
-
     sendMessage(userInput);
     setChatInput("");
   };
 
   const handleRefetchMessage = async () => {
-      const {text: secondLastMessage} = messages[messages.length - 2];
+    const { text: secondLastMessage } = messages[messages.length - 2];
 
     const userInput = {
       id: uuid(),
       isUserMessage: true,
-      text: secondLastMessage, 
+      text: secondLastMessage,
     };
 
     sendMessage(userInput);
   };
+
+  const isChatInputValid = chatInputSchema.safeParse(chatInput).success;
 
   return (
     <div className="w-full max-h-[calc(100vh-5.5rem)] tablet:h-[calc(90vh-5.5rem)] tablet:max-w-full desktop:col-span-11 desktop:max-h-[calc(98vh-5.5rem)]">
@@ -101,24 +111,19 @@ export default function MainChat() {
         <ChatMessages />
         <div className="px-4 flex w-full justify-center items-center space-x-2">
           <Textarea
-            className="max-h-64  resize-none tablet:max-w-[70%] desktop:text-lg"
+            className="my-2 max-h-64  resize-none tablet:max-w-[70%] desktop:text-lg"
             placeholder="Type your message here."
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                !e.shiftKey &&
-                !chatInput.match(/\n/) &&
-                chatInput !== ""
-              ) {
+              if (e.key === "Enter" && !e.shiftKey && isChatInputValid) {
                 e.preventDefault();
                 handleSendMessage();
               }
             }}
           />
           <Button
-            disabled={isPending || !chatInput}
+            disabled={isPending || !isChatInputValid}
             type="submit"
             size="icon"
             className="bg-whisker-darkBlue"
@@ -130,9 +135,16 @@ export default function MainChat() {
               <ChevronUp aria-label="enter-button" />
             )}
           </Button>
-          <Button className="bg-whisker-darkBlue" disabled={messages.length <= 1} onClick={handleRefetchMessage} size="sm">
-              <RefreshCw className="h-4 w-4" />
-            </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button className="bg-whisker-darkBlue" size="sm">
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Refresh the last message</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
