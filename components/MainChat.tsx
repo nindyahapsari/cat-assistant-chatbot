@@ -2,8 +2,6 @@
 
 import { useContext, useState } from "react";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Loader2, ChevronUp, RefreshCw } from "lucide-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { v4 as uuid } from "uuid";
@@ -11,8 +9,16 @@ import { Message } from "@/types";
 import { MessagesContext } from "@/context/messages";
 import ChatMessages from "./ChatMessages";
 
-const chatInputSchema = z.string().trim().min(1, "Chat input cannot be empty");
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
+const chatInputSchema = z.string().trim().min(1, "Chat input cannot be empty");
 
 export default function MainChat() {
   const {
@@ -22,7 +28,6 @@ export default function MainChat() {
     updateMessage,
     setIsMessageUpdating,
   } = useContext(MessagesContext);
-
 
   const [chatInput, setChatInput] = useState<string>("");
   const { mutate: sendMessage, isPending } = useMutation({
@@ -82,18 +87,17 @@ export default function MainChat() {
       text: chatInput,
     };
 
-
     sendMessage(userInput);
     setChatInput("");
   };
 
   const handleRefetchMessage = async () => {
-      const {text: secondLastMessage} = messages[messages.length - 2];
+    const { text: secondLastMessage } = messages[messages.length - 2];
 
     const userInput = {
       id: uuid(),
       isUserMessage: true,
-      text: secondLastMessage, 
+      text: secondLastMessage,
     };
 
     sendMessage(userInput);
@@ -112,11 +116,7 @@ export default function MainChat() {
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                !e.shiftKey &&
-                isChatInputValid
-              ) {
+              if (e.key === "Enter" && !e.shiftKey && isChatInputValid) {
                 e.preventDefault();
                 handleSendMessage();
               }
@@ -135,9 +135,16 @@ export default function MainChat() {
               <ChevronUp aria-label="enter-button" />
             )}
           </Button>
-          <Button className="bg-whisker-darkBlue" disabled={messages.length <= 1} onClick={handleRefetchMessage} size="sm">
-              <RefreshCw className="h-4 w-4" />
-            </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button className="bg-whisker-darkBlue" size="sm">
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Refresh the last message</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
