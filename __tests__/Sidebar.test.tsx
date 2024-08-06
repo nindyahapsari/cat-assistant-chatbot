@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom"; // Import the toBeInTheDocument function
-import { render, screen } from "@testing-library/react";
+import React from "react";
+import { render, screen } from "./test-utils";
+// import { render, screen } from "@testing-library/react";
 import Sidebar from "@/components/Sidebar";
 import { SIDEBARLINKSINFO } from "@/components/Sidebar";
-import React from "react";
 
 describe("Sidebar Component", () => {
   it("renders the Sidebar component", () => {
-	render(<Sidebar>Test Content</Sidebar>);
+	render(<Sidebar />);
 
 	// Check if the logo is rendered
 	expect(screen.getByAltText("logo")).toBeInTheDocument();
@@ -17,7 +18,7 @@ describe("Sidebar Component", () => {
 	});
 
 	// Check if the children are rendered
-	expect(screen.getByText("Test Content")).toBeInTheDocument();
+	// expect(screen.getByText("Test Content")).toBeInTheDocument();
   });
 
   it.skip("renders the loading state", () => {

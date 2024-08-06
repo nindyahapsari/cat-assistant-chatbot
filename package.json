@@ -10,7 +10,7 @@
     "lint": "next lint",
     "init-db": "ts-node initDatabase.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch"    
   },
   "dependencies": {
     "@clerk/nextjs": "^5.2.6",
