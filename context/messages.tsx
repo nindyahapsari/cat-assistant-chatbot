@@ -2,10 +2,26 @@ import { Message } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { createContext, useState } from "react";
 
+const WHISKER_CHAT_STARTER = `
+Greetings cat member, I'm Whisker, your personal cat assistant. How can I help you today?
+
+You can ask me questions about:
+- Your cat's health and well-being
+- Feeding schedules and dietary advice
+- Activities and playtime ideas
+- Grooming tips and schedules
+
+For the best responses, please ask specific questions. For example:
+- "What should I feed my cat for dinner?"
+- "How often should I groom my cat?"
+
+I'm here to assist you with all your cat-related queries!
+`;
+
 const defaultValue = [
   {
     id: uuidv4(),
-    text: "Greetings cat member, I'm Whisker your personal cat assistant. How can I help you today?",
+    text: WHISKER_CHAT_STARTER,
     isUserMessage: false,
   },
 ];
