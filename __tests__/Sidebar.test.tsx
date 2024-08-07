@@ -1,15 +1,14 @@
 import "@testing-library/jest-dom"; // Import the toBeInTheDocument function
 import { render, screen } from "@testing-library/react";
 import Sidebar from "@/components/Sidebar";
-import { SIDEBARLINKSINFO } from "@/components/Sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ClerkProvider } from "@clerk/nextjs";
-import { useRouter } from "next/router";
 import { MessagesProvider } from "@/context/messages";
+import { SIDEBARLINKSINFO } from "@/components/Sidebar";
 
 const queryClient = new QueryClient();
 
-// jest.mock("next/navigation", () => jest.requireActual("next-router-mock"));
+//source: stackoverflow
 jest.mock("next/navigation", () => {
   return {
     __esModule: true,
@@ -29,7 +28,6 @@ jest.mock("next/navigation", () => {
 
 const clerkPubKey =
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "not found";
-console.log("clerkPubKey", clerkPubKey);
 
 function renderSidebarWithProvider() {
   return render(
@@ -43,22 +41,36 @@ function renderSidebarWithProvider() {
   );
 }
 
+describe("SIDEBARLINKSINFO", () => {
+  it("contains the correct links", () => {
+    expect(SIDEBARLINKSINFO).toEqual([
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        icon: expect.any(Object),
+      },
+      {
+        path: "/cat-profile",
+        name: "Cat Profile",
+        icon: expect.any(Object),
+      },
+    ]);
+  });
+});
+
 describe("Sidebar Component", () => {
   it("renders the Sidebar component", () => {
     renderSidebarWithProvider();
 
-    screen.debug();
     // Check if the logo is rendered
-    // expect(screen.getByAltText("logo")).toBeInTheDocument();
+    expect(screen.getByAltText("logo")).toBeInTheDocument();
 
     // Check if the sidebar links are rendered
-    // SIDEBARLINKSINFO.forEach((link) => {
-    //   expect(screen.getByText(link.name)).toBeInTheDocument();
-    // });
+    SIDEBARLINKSINFO.forEach((link) => {
+      expect(screen.getByText(link.name)).toBeInTheDocument();
+    });
 
     // Check if the children are rendered
-    // expect(screen.getByText("Test Content")).toBeInTheDocument();
+    expect(screen.getByText("Test Content")).toBeInTheDocument();
   });
-
-  it.skip("renders the loading state", () => {});
 });
