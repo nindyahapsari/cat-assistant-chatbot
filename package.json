@@ -10,7 +10,7 @@
     "lint": "next lint",
     "init-db": "ts-node initDatabase.ts",
     "test": "jest",
-    "test:watch": "jest --watch"    
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.2.6",
@@ -37,6 +37,7 @@
     "googleapis": "^140.0.1",
     "lucide-react": "^0.408.0",
     "next": "14.2.5",
+    "next-router-mock": "^0.9.13",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",

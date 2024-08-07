@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, ReactNode } from "react";
 import { useUser } from "@clerk/nextjs";
-import { usePathname, useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
 import SidebarLinks from "@/components/Sidebar/SidebarLinks";
 import HeaderElements from "@/components/Sidebar/HeaderElements";
@@ -24,8 +23,6 @@ export const SIDEBARLINKSINFO = [
 export default function Sidebar({ children }: { children: ReactNode }) {
   const [isClient, setIsClient] = useState(false);
   const { user } = useUser();
-  const router = useRouter();
-  const path = usePathname();
 
   const userId = user?.id;
 
