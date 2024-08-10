@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({ weight: ["400", "500"], subsets: ["latin"] });
 
@@ -19,10 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${poppins.className} bg-whisker-white overflow-hidden`}>
-            <Sidebar>
-            {children}
-            </Sidebar>          
+        <body
+          className={`${poppins.className} bg-whisker-white overflow-hidden`}
+        >
+          <Sidebar>{children}</Sidebar>
+          <SpeedInsights />
         </body>
       </Providers>
     </html>
