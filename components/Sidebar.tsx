@@ -1,14 +1,13 @@
 "use client";
 import { useState, useEffect, ReactNode } from "react";
 import { useUser } from "@clerk/nextjs";
-import { usePathname, useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
 import SidebarLinks from "@/components/Sidebar/SidebarLinks";
 import HeaderElements from "@/components/Sidebar/HeaderElements";
 import Logo from "@/components/Sidebar/Logo";
 import { Cat, Layout } from "lucide-react";
 
-const SIDEBARLINKSINFO = [
+export const SIDEBARLINKSINFO = [
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -24,8 +23,6 @@ const SIDEBARLINKSINFO = [
 export default function Sidebar({ children }: { children: ReactNode }) {
   const [isClient, setIsClient] = useState(false);
   const { user } = useUser();
-  const router = useRouter();
-  const path = usePathname();
 
   const userId = user?.id;
 
